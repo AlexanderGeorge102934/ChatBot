@@ -187,9 +187,6 @@ python analyze_transcripts.py
 
 ## License
 
-This project is shared for **educational and demonstration purposes**. Feel free to modify or share with attribution.  
+This project is shared for **educational and demonstration purposes**.
 
 ---
-
-Feel free to open an issue or pull request with any questions or improvements!  
-Happy Chatbot Building!
