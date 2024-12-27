@@ -1,15 +1,15 @@
-Below is a sample **README.md** you can adapt for your GitHub repository. It outlines how the chatbot project is structured, how to install dependencies, and how to run it.
+Below is an **updated** `README.md` you can use in your GitHub repository. It explains that the `w2v.pkl` file isn’t included and how users can acquire their own Word2Vec model, without hosting it in your repo.
 
 ---
 
 # Chatbot Project
 
-This repository contains a simple **Python chatbot** that uses:
+A simple Python chatbot demonstrating:
 
-- **Scikit-learn** classifiers for sentiment detection  
-- **Word2Vec** embeddings (stored in `w2v.pkl`)  
-- **Various stylistic analyses** (average sentence length, punctuation density, type-token ratio, etc.)  
-- **Transcript processing** scripts to separate chatbot and user utterances  
+- **Scikit-learn** for sentiment classification  
+- **Word2Vec** embeddings for feature extraction  
+- **Stylistic analysis** (type-token ratio, punctuation density, etc.)  
+- **Transcript processing** to separate chatbot and user utterances
 
 ---
 
@@ -18,7 +18,10 @@ This repository contains a simple **Python chatbot** that uses:
 - [Project Structure](#project-structure)  
 - [Installation](#installation)  
 - [Usage](#usage)  
+- [Getting the Word2Vec Model](#getting-the-word2vec-model)  
 - [Customization](#customization)  
+- [Transcript Processing](#transcript-processing)  
+- [Advanced Transcript Analysis (Optional)](#advanced-transcript-analysis-optional)  
 - [Tips & Troubleshooting](#tips--troubleshooting)  
 - [License](#license)  
 
@@ -28,151 +31,165 @@ This repository contains a simple **Python chatbot** that uses:
 
 ```
 .
-├── analyze_transcripts.py     # Optional script for advanced transcript analysis using TAACO
+├── analyze_transcripts.py     # Optional script for advanced transcript analysis (requires TAACO)
 ├── chatbot.py                 # Main chatbot code (dialogue states, sentiment classifier, etc.)
-├── dataset.csv                # Training dataset for sentiment classification
-├── process_transcripts.py     # Post-processing script to separate chatbot/user utterances
+├── dataset.csv                # Training data for sentiment classification (sample or small data recommended)
+├── process_transcripts.py     # Script to separate chatbot/user utterances into separate files
 ├── requirements.txt           # Python dependencies
-├── w2v.pkl                    # Pretrained Word2Vec embeddings 
+├── test.txt                   # Example transcript showing how the chatbot logs dialogue
+└── README.md                  # This file
 ```
 
-### What Each File Does
-
-1. **`chatbot.py`**  
-   - Contains the main logic for the chatbot:  
-     - Loading data  
-     - Computing Word2Vec embeddings  
-     - Performing sentiment classification  
-     - Conducting stylistic analyses  
-   - The `run_chatbot(...)` function orchestrates the conversation flow.
-
-2. **`process_transcripts.py`**  
-   - Reads a transcript file (like `test.txt`) and produces three new files:
-     - `all_test.txt` (all utterances)
-     - `chatbot_test.txt` (only chatbot utterances)
-     - `user_test.txt` (only user utterances)
-
-3. **`analyze_transcripts.py`**  
-   - Integrates with **TAACO** (if installed) to perform more advanced coherence analyses on transcripts.  
-   - By default, it looks for a directory of processed transcripts and outputs a CSV with various metrics.
-
-4. **`test.txt`**  
-   - Example transcript showing how the chatbot’s dialogue is logged.
-
-5. **`requirements.txt`**  
-   - Lists all necessary Python dependencies (some may be from Anaconda distributions).
-
-6. **`dataset.csv`**  
-   - Labeled training data for sentiment analysis.  
-   - If it’s large or proprietary, you may want to exclude it or include only a sample.
-
-7. **`w2v.pkl`**  
-   - Pretrained Word2Vec embeddings (often >1GB).  
-   - You may want to host it externally if it’s too large.
+> **Note**: A file named `w2v.pkl` (containing the pretrained Word2Vec model) is **not** included here because it is very large. See [Getting the Word2Vec Model](#getting-the-word2vec-model) below.
 
 ---
 
 ## Installation
 
-1. **Clone the Repository**  
+1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/yourusername/chatbot-project.git
    cd chatbot-project
    ```
 
-2. **(Optional) Create a Virtual Environment**  
+2. **(Optional) Create a Virtual Environment**
+
    ```bash
    python -m venv venv
-   source venv/bin/activate   # macOS/Linux
+   source venv/bin/activate    # macOS/Linux
    # or
-   venv\Scripts\activate      # Windows
+   venv\Scripts\activate       # Windows
    ```
 
-3. **Install Dependencies**  
+3. **Install Dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
-   - If you find some packages unnecessary, you can remove them from `requirements.txt`.
 
-4. **(Optional) Download NLTK Data**  
-   - This project uses NLTK for tokenization. If you haven’t already downloaded the relevant data, do:
+4. **(Optional) NLTK Data**
+
+   - If you haven’t installed NLTK’s tokenizers before, in a Python shell:
      ```python
      import nltk
      nltk.download('punkt')
      ```
-   - Or let the code handle downloads automatically.
+   - Or let the code handle the download automatically.
 
-5. **Place `w2v.pkl` and `dataset.csv`**  
-   - Ensure `w2v.pkl` and `dataset.csv` are located in the same directory as `chatbot.py`, unless you change file paths in the code.
+5. **Dataset**
+
+   - If `dataset.csv` is large or private, you may need to provide your own smaller sample or update references in `chatbot.py`.
 
 ---
 
 ## Usage
 
-### Running the Chatbot Interactively
+### 1. Run the Chatbot
 
-1. **Start the Chatbot**  
-   ```bash
-   python chatbot.py
-   ```
-2. **Enter responses** as prompted:
-   - Name  
-   - Topics to talk about  
-   - Additional inputs for stylistic analysis  
-
-The chatbot will log your conversation in a timestamped `.txt` file.
-
-### Processing Transcripts
-
-If you have a file like `test.txt` containing a transcript, run:
 ```bash
-python process_transcripts.py
+python chatbot.py
 ```
-It will generate three new files in the same directory:
-- `all_test.txt` (all utterances)
-- `chatbot_test.txt` (chatbot-only utterances)
-- `user_test.txt` (user-only utterances)
 
-### Advanced Transcript Analysis (Optional)
+- The chatbot will ask for your name and proceed with a conversation.  
+- It logs everything to a timestamped `.txt` file in the project directory.
 
-If you have [**TAACO**](https://www.linguisticanalysistools.org/taaco.html) installed, you can run:
-```bash
-python analyze_transcripts.py
-```
-By default, this looks for a directory (e.g., `processed_transcripts/`) of transcripts and writes results to a CSV file.
+### 2. Chatbot Flow
+
+- **Sentiment Analysis**  
+  Uses a scikit-learn model (e.g., SVM) trained on Word2Vec embeddings or TFIDF features.
+- **Stylistic Analysis**  
+  Reports metrics like average sentence length, punctuation density, type-token ratio, and more.
+
+---
+
+## Getting the Word2Vec Model
+
+The Word2Vec model file, typically `w2v.pkl`, is **not** included in this repo because of its large size. You have a few options:
+
+1. **Obtain the Pretrained Google News Word2Vec**  
+   - Download from [this archive](https://code.google.com/archive/p/word2vec/), then convert it to `.pkl` format if needed.
+   - Place `w2v.pkl` in the same directory as `chatbot.py`.
+
+2. **Use Gensim’s Pretrained Models**  
+   - You can load Google News Word2Vec via Gensim and save it locally:
+     ```python
+     import gensim.downloader as api
+
+     # Download the Google News vectors (about 1.6GB)
+     model = api.load("word2vec-google-news-300")
+
+     # Save as a .pkl for use in chatbot.py
+     model.save("w2v.pkl")
+     ```
+   - Again, put `w2v.pkl` in the project directory.
+
+3. **Use Your Own Word2Vec**  
+   - If you have a different pretrained model, rename or update `chatbot.py` references accordingly.
 
 ---
 
 ## Customization
 
-- **Switch Classification Models**  
-  - In `chatbot.py`, see `instantiate_models()`. Uncomment or comment out the lines for `Naive Bayes`, `Logistic Regression`, `SVM`, or `MLP`.
-  - Comment/uncomment the code for training them with TFIDF or Word2Vec.
+- **Classifier Choice**  
+  - In `chatbot.py`, check `instantiate_models()` to pick Naive Bayes, Logistic Regression, SVM, or MLP.
+  - Adjust the calls to `train_model_tfidf(...)` or `train_model_w2v(...)` depending on your desired approach.
 
-- **Toggle TFIDF vs. Word2Vec**  
-  - If you prefer TFIDF, use `vectorize_train()` and `train_model_tfidf()`.  
-  - If you want Word2Vec, focus on `string2vec()`, `train_model_w2v()`, etc.
+- **Stylistic Features**  
+  - See `custom_feature_1()` and `custom_feature_2()` in `chatbot.py`. You can expand or modify them.
 
-- **Add More Stylistic Features**  
-  - Look at `custom_feature_1()` and `custom_feature_2()` in `chatbot.py` and add more sophisticated stylistic metrics.
+- **Dependency Parsing**  
+  - If you don’t need dependency parses from Stanford CoreNLP, you can comment out the relevant lines (like `get_dependency_parse()`).
+
+---
+
+## Transcript Processing
+
+If you have a transcript file like `test.txt` and want to separate chatbot and user utterances:
+
+```bash
+python process_transcripts.py
+```
+
+It generates:
+
+- `all_test.txt`  
+- `chatbot_test.txt`  
+- `user_test.txt`
+
+---
+
+## Advanced Transcript Analysis (Optional)
+
+If you install [**TAACO**](https://www.linguisticanalysistools.org/taaco.html) (a separate download), you can run:
+
+```bash
+python analyze_transcripts.py
+```
+
+- By default, this looks for a directory of processed transcripts (e.g., `processed_transcripts/`) and saves a CSV file with various coherence metrics.
 
 ---
 
 ## Tips & Troubleshooting
 
 - **.gitignore**  
-  - Exclude IDE folders (`.idea/`) and virtual environment directories (`venv/`), as well as any large files (like `w2v.pkl`) you don’t want on GitHub.
-
-- **Stanford CoreNLP**  
-  - The code calls `get_dependency_parse()` using a **CoreNLP server** on `http://localhost:9000`. If you don’t need dependency parsing, comment out related lines.
+  - Recommend ignoring `venv/`, `.idea/`, `__pycache__/`, `*.pyc`, and any large data/model files like `w2v.pkl`.
 
 - **Large Files**  
-  - If `w2v.pkl` or `dataset.csv` are huge, consider hosting them elsewhere (e.g., cloud storage) and updating the code accordingly.
+  - If you have a big dataset or model, consider external hosting or Gensim’s built-in downloads.
+
+- **Environment Issues**  
+  - Make sure your Python version matches the code (e.g., 3.8+).  
+  - Install correct versions of scikit-learn, nltk, etc., as listed in `requirements.txt`.
 
 ---
 
 ## License
 
-This project is provided for demonstration and learning purposes. Feel free to modify and reuse as needed.
+This project is shared for **educational and demonstration purposes**. Feel free to modify or share with attribution.  
 
 ---
+
+Feel free to open an issue or pull request with any questions or improvements!  
+Happy Chatbot Building!
