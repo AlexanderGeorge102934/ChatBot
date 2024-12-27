@@ -1,5 +1,3 @@
-Below is an **updated** `README.md` you can use in your GitHub repository. It explains that the `w2v.pkl` file isn’t included and how users can acquire their own Word2Vec model, without hosting it in your repo.
-
 ---
 
 # Chatbot Project
