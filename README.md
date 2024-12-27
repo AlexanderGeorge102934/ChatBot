@@ -36,7 +36,6 @@ A simple Python chatbot demonstrating:
 ├── dataset.csv                # Training data for sentiment classification (sample or small data recommended)
 ├── process_transcripts.py     # Script to separate chatbot/user utterances into separate files
 ├── requirements.txt           # Python dependencies
-├── test.txt                   # Example transcript showing how the chatbot logs dialogue
 └── README.md                  # This file
 ```
 
